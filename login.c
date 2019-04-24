@@ -6,19 +6,23 @@ char buf[BUFFSIZE], *bp; //buffer and bufferpointer
 
 //returns flag for no more tokens to parse 1 for being end of string or file
 int tokenizer(char* str, char* outstr, char delim, int occurrences) {
-  printf("start tokenizer\n");
+  //printf("start tokenizer\n");
   int i = 0, j = 0;
-  if (!str)   {  return 1; }
-  if (!delim) {  return 1; }
+  if(!str){
+    return 1;
+  }
+  if(!delim){
+    return 1;
+  }
 
-  printf("clearing outstring\n");
+  //printf("clearing outstring\n");
   while(outstr[i] != 0) {
     outstr[i] = 0;
     i++;
   }
   i = 0;
 
-  printf("finding location in string\n");
+  //printf("finding location in string\n");
   while(str[i] && occurrences > 0) {
     if (str[i] == delim) {
       occurrences--;
@@ -31,7 +35,7 @@ int tokenizer(char* str, char* outstr, char delim, int occurrences) {
       return 1;
   }
 
-  printf("copying\n");
+  //printf("copying\n");
   while (str[i] && str[i] != delim) {
     outstr[j] = str[i];
     //printf("%c ", outstr[j]);
@@ -56,7 +60,7 @@ int main(int argc, char *argv[]){
 
   fixtty(argv[1]);
 
-  printf("opening passwd file\n");
+  //printf("opening passwd file\n");
   passwrdfile = open("/etc/passwd", 0);
   if(!passwrdfile){
     printf("Login failed to load password file!!\n");
@@ -75,11 +79,11 @@ int main(int argc, char *argv[]){
     //printf("user: %s, password: %s\n", user, pass);
     int j = 0;
     n = read(passwrdfile, buf, BUFFSIZE);
-    printf("getting line from file\n");
+    //printf("getting line from file\n");
 
     tokenizer(buf, line, '\n', j++);
     //line = strtok(buf, '\n');
-    printf("%s\n", line);
+    //printf("%s\n", line);
 
     int flag = 0;
     while(line){
@@ -94,7 +98,7 @@ int main(int argc, char *argv[]){
 
       char name_file[32];
       tokenizer(line, name_file, ':', k++);
-      printf("name in file: %s\n", name_file);
+      //printf("name in file: %s\n", name_file);
       //name_file = strtok(line, ':');
       if(!strcmp(name_file, user)){
         char pass_file[32];
@@ -127,7 +131,7 @@ int main(int argc, char *argv[]){
           //mode = strtok(0, ' ');
 
           chuid(atoi(uid), atoi(gid));
-          //chdir(direc);
+          chdir(direc);
 
           //printf("%s %s %s %s %s %s %s %s %s\n", name_file, pass_file, gid, uid, fullname, alias, mode, direc, program);
           close(passwrdfile);
