@@ -51,7 +51,7 @@ int main(int argc, char *argv[]){
   int in, out, err, passwrdfile,  n=0, i=0, k=1;
   int gid, uid;
 
-  char user[32], pass[32], line[256], *cp;
+  char user[32], pass[32], line[128], *cp;
 
   close(0); close(1); close(2);
   in = open(argv[1], O_RDONLY);
