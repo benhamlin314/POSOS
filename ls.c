@@ -1,3 +1,4 @@
+//ls
 #include "ucode.c"
 
 #define BUFFSIZE 1024
@@ -49,8 +50,9 @@ int main(int argc, char *argv[]){
   int fd;
   int n, flag;
 
-  if(argc > 1){
+  if(argc > 1){//only works with absolute path
     //printf("opening pathname\n");
+    chdir(argv[1]);
     fd = open(argv[1], O_RDONLY);
   }
   else{
@@ -63,7 +65,7 @@ int main(int argc, char *argv[]){
   if(fd < 0){
     printf("file descriptor failed to open\n");
     close(fd);
-    return 1;
+    exit(-1);
   }
 
   //read inode block
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]){
 
   if(n < 0){
     printf("read failed\n");
-    return 1;
+    exit(-1);
   }
   char temp[32];
   //printf("printing stats\n");
@@ -95,5 +97,5 @@ int main(int argc, char *argv[]){
     dp = (DIR *)cp;
   }
   close(fd);
-  return 0;
+  exit(0);
 }

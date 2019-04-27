@@ -1,3 +1,4 @@
+//init
 #include "ucode.c"
 #define BUFFSIZE 1024
 
@@ -30,7 +31,7 @@ int main(int argc, char * argv[]){
         if(s1){
           int pid, status;
           while(1){
-            printf("Init: waiting for zombie\n");
+            printf("Init: waiting for zombie\n\r");
             pid = wait(&status);
 
             if(pid==cons){

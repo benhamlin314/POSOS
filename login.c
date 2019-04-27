@@ -1,10 +1,11 @@
+//login
 #include "ucode.c"
 
 #define BUFFSIZE 1024
 
 char buf[BUFFSIZE], *bp; //buffer and bufferpointer
 
-//returns flag for no more tokens to parse 1 for being end of string or file
+//returns flag for no more tokens to parse. 1 for being end of string or file
 int tokenizer(char* str, char* outstr, char delim, int occurrences) {
   //printf("start tokenizer\n");
   int i = 0, j = 0;

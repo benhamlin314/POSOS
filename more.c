@@ -1,38 +1,51 @@
+//more
 #include "ucode.c"
 
 #define BUFFSIZE 1024
 
-char buf[1];
-char tty[32];
+char buf[2];
+char tty[64];
 
 int main(int argc, char *argv[]){
   int n;
-  int in;
+  int in, out;
   int lines = 0;
   int flag = 0;
 
 
 
   gettty(tty);
-  int in1 = open(tty, O_RDONLY);
-  int out1 = open(tty, O_WRONLY);
+  int in1 = open("/dev/tty0", O_RDONLY);
+  int out1 = open("/dev/tty0", O_WRONLY);
 
-  printf("argc is %d\n", argc);
+  //printf("argc is %d\n", argc);
   if(argc > 1){
     in = open(argv[1], O_RDONLY);
+    out = 1;
   }
   else{
-    in = 0;
+    in = in1;
+    out = 1;
   }
 
   if(in < 0){
-    printf("file not opened\n");
-    return 1;
+    write(out1, "file not opened\n", 16);
+    exit(-1);
   }
 
-  while((n = read(in, buf, 1))){
+  while((n = read(in, buf, 1)) == 1){
+    /*if(n < 1){
+      printf("DONE\n");
+      break;
+    }*/
     //mputc(*buf);
-    write(1, buf, 1);
+    //putchar(buf[0]);
+    if(argc > 1){//file out through tty
+      write(out, buf, 1);
+    }
+    else{//stdout
+      write(out1, buf, 1);
+    }
 
 
     if(*buf == '\n' || *buf == '\r'){
@@ -45,7 +58,10 @@ int main(int argc, char *argv[]){
           char c = 0;
 
           n = read(in1, &c, 1);
-          c = (c&0x7F);
+          if(n==0||c==4||c==0){
+            continue;
+          }
+          c = (c & 0x7F);
 
           if(c == '\n' || c == '\r'){//if enter the user exits more
             break;
@@ -61,4 +77,5 @@ int main(int argc, char *argv[]){
     }
   }
   close(in); close(out1);
+  exit(0);
 }
